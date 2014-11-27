@@ -128,8 +128,10 @@ KeyboardInputManager.prototype.listen = function () {
 };
 
 KeyboardInputManager.prototype.restart = function (event) {
-  event.preventDefault();
-  this.emit("restart");
+  if (confirm('You sure?')) {
+    event.preventDefault();
+    this.emit("restart");
+  }
 };
 
 KeyboardInputManager.prototype.keepPlaying = function (event) {

@@ -22,8 +22,12 @@ GameManager.prototype.restart = function () {
 
 // Keep playing after winning (allows going over 2048)
 GameManager.prototype.keepPlaying = function () {
-  this.keepPlaying = true;
-  this.actuator.continueGame(); // Clear the game won/lost message
+  if (confirm('You sure?')) {
+    if (confirm('Like, really?')) {
+      this.keepPlaying = true;
+      this.actuator.continueGame(); // Clear the game won/lost message
+    }
+  }
 };
 
 // Return true if the game is lost, or has won and the user hasn't kept playing
@@ -167,7 +171,7 @@ GameManager.prototype.move = function (direction) {
           self.score += merged.value;
 
           // The mighty 2048 tile
-          if (merged.value === 2048) self.won = true;
+          if (merged.value === 4096) self.won = true;
         } else {
           self.moveTile(tile, positions.farthest);
         }
