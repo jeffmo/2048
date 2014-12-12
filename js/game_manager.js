@@ -4,7 +4,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
 
-  this.startTiles     = 2;
+  this.startTiles     = 1; //2;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
@@ -22,12 +22,8 @@ GameManager.prototype.restart = function () {
 
 // Keep playing after winning (allows going over 2048)
 GameManager.prototype.keepPlaying = function () {
-  if (confirm('You sure?')) {
-    if (confirm('Like, really?')) {
-      this.keepPlaying = true;
-      this.actuator.continueGame(); // Clear the game won/lost message
-    }
-  }
+  this.keepPlaying = true;
+  this.actuator.continueGame(); // Clear the game won/lost message
 };
 
 // Return true if the game is lost, or has won and the user hasn't kept playing
@@ -64,6 +60,16 @@ GameManager.prototype.setup = function () {
 
 // Set up the initial tiles to start the game with
 GameManager.prototype.addStartTiles = function () {
+  // Start the game out with a reasonable pre-play setup
+  // (Getting to this pre-play setup is kinda boring...so I'm jumping to the
+  //  chase with this hack)
+  var y = 0;
+  [128, 256, 512, 1024].forEach(function(value) {
+    var tile = new Tile({x: 0, y: y}, value);
+    this.grid.insertTile(tile);
+    y++;
+  }, this);
+
   for (var i = 0; i < this.startTiles; i++) {
     this.addRandomTile();
   }
